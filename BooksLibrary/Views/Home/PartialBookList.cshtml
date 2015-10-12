@@ -1,0 +1,50 @@
+﻿@model IEnumerable<BooksLibrary.Models.Book>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ISBN)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Book_Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Publication_Date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Publisher)
+        </th>
+        <th>
+            Author
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Category.Category_Name)
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ISBN)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Book_Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Publication_Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Publisher)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Author.First_Name) @Html.DisplayFor(modelItem => item.Author.Last_Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category.Category_Name)
+            </td>
+        </tr>
+    }
+
+</table>
+

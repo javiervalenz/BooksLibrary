@@ -1,0 +1,14 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h1>Welcome to My Book Library</h1>
+    <p class="lead">This is a simple MVC application that manages a database of books and displays items by author or by category.</p>    
+</div>
+
+<div class="row">          
+        <p>@Html.ActionLink("List All Books", "ListBooks", new { area = "" }, new { @class = "btn btn-lg btn-default" })</p>    
+        <p>@Html.ActionLink("List by Author", "ListByAuthor", new { area = "" }, new { @class = "btn btn-lg btn-default" })</p>    
+        <p>@Html.ActionLink("List by Category", "ListByCategory", new { area = "" }, new { @class = "btn btn-lg btn-default" })</p>    
+</div>
