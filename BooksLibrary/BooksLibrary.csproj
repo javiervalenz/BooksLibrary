@@ -126,30 +126,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Author.cs">
-      <DependentUpon>BooksLibraryModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Book.cs">
-      <DependentUpon>BooksLibraryModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\BooksLibraryModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>BooksLibraryModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\BooksLibraryModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>BooksLibraryModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\BooksLibraryModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>BooksLibraryModel.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Category.cs">
-      <DependentUpon>BooksLibraryModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -160,25 +136,8 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Models\BooksLibraryModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>BooksLibraryModel.edmx</DependentUpon>
-      <LastGenOutput>BooksLibraryModel.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Models\BooksLibraryModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>BooksLibraryModel.edmx</DependentUpon>
-      <LastGenOutput>BooksLibraryModel.cs</LastGenOutput>
-    </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <EntityDeploy Include="Models\BooksLibraryModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>BooksLibraryModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\BooksLibraryModel.edmx.diagram">
-      <DependentUpon>BooksLibraryModel.edmx</DependentUpon>
-    </Content>
     <None Include="Properties\PublishProfiles\BooksLibrary.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -227,6 +186,12 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BooksLibrary.DomainModel\BooksLibrary.DomainModel.csproj">
+      <Project>{2b71c002-6eb8-4163-a5fc-620f9d23f313}</Project>
+      <Name>BooksLibrary.DomainModel</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

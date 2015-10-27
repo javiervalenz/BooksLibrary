@@ -1,16 +1,18 @@
-﻿using BooksLibrary.Models;
-using System;
+﻿using BooksLibrary.DomainModel.Models;
+using BooksLibrary.DomainModel.Repositories;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Web;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace BooksLibrary.Controllers
 {
     public class HomeController : Controller
     {
-        private BooksLibraryEntities db = new BooksLibraryEntities();
+        private BookRepository bookDb = new BookRepository();
+        private AuthorRepository authorDb = new AuthorRepository();
+        private CategoryRepository categoryDb = new CategoryRepository();
 
         private List<SelectListItem> GetAuthors(bool FirstItemOption = true)
         {
@@ -24,7 +26,7 @@ namespace BooksLibrary.Controllers
                 authorsList.Add(firstItem);
             }
 
-            foreach (Author a in db.Authors.OrderBy(a => a.First_Name + a.Last_Name))
+            foreach (var a in authorDb.GetAllAuthors().Result.OrderBy(a => a.First_Name + a.Last_Name))
             {
                 SelectListItem item = new SelectListItem();
                 item.Text = a.First_Name + " " + a.Last_Name;
@@ -47,7 +49,7 @@ namespace BooksLibrary.Controllers
                 categoryList.Add(firstItem);
             }
 
-            foreach (Category c in db.Categories.OrderBy(c => c.Category_Name))
+            foreach (var c in categoryDb.GetAllCategories().Result.OrderBy(c => c.Category_Name))
             {
                 SelectListItem item = new SelectListItem();
                 item.Text = c.Category_Name;
@@ -63,11 +65,11 @@ namespace BooksLibrary.Controllers
             return View();
         }        
 
-        public ActionResult ListBooks()
+        public async Task<ActionResult> ListBooks()
         {
-            ViewBag.Message = "Displaying All Books";           
-
-            return View(db.Books);
+            ViewBag.Message = "Displaying All Books";
+            var model = await bookDb.GetAllBooks();
+            return View(model);
         }
 
         public ActionResult ListByAuthor()
@@ -76,7 +78,7 @@ namespace BooksLibrary.Controllers
 
             ViewData["Authors"] = GetAuthors();            
 
-            return View(db.Books);
+            return View(bookDb.GetAllBooks().Result);
         }
 
         [HttpPost]
@@ -84,11 +86,11 @@ namespace BooksLibrary.Controllers
         {
             if(id > 0)
             {
-                var filteredBooksList = db.Books.Where(b => b.Author_Id == id);
+                var filteredBooksList = bookDb.GetAllBooks().Result.Where(b => b.Author_Id == id);
                 return PartialView("PartialBookList", filteredBooksList);
             }
 
-            return PartialView("PartialBookList", db.Books);
+            return PartialView("PartialBookList", bookDb.GetAllBooks().Result);
         }
 
         public ActionResult ListByCategory()
@@ -97,7 +99,7 @@ namespace BooksLibrary.Controllers
 
             ViewData["Categories"] = GetCategories();
 
-            return View(db.Books);
+            return View(bookDb.GetAllBooks().Result);
         }
 
         [HttpPost]
@@ -105,18 +107,18 @@ namespace BooksLibrary.Controllers
         {
             if (id > 0)
             {
-                var filteredBooksList = db.Books.Where(b => b.Category_Id == id);
+                var filteredBooksList = bookDb.GetAllBooks().Result.Where(b => b.Category_Id == id);
                 return PartialView("PartialBookList", filteredBooksList);
             }
 
-            return PartialView("PartialBookList", db.Books);
+            return PartialView("PartialBookList", bookDb.GetAllBooks().Result);
         }
 
-        public ActionResult Edit(int id = 0)
+        public async Task<ActionResult> Edit(int id = 0)
         {
             ViewBag.Message = "Edit Book";
 
-            Book book = db.Books.Find(id);
+            var book = await bookDb.GetBookById(id);
             if (book == null)
             {
                 return View("Error");
@@ -126,14 +128,14 @@ namespace BooksLibrary.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(Book book)
+        public async Task<ActionResult> Edit(Book book)
         {
             ViewBag.Message = "Edit Book";
 
             if (ModelState.IsValid)
-            {                
-                db.Entry(book).State = EntityState.Modified;
-                db.SaveChanges();
+            {
+                await bookDb.UpdateBook(book);            
+                
                 return RedirectToAction("ListBooks");
             }
 
@@ -148,28 +150,30 @@ namespace BooksLibrary.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(Book book)
+        public async Task<ActionResult> Create(Book book)
         {
             if (ModelState.IsValid)
             {
-                Author author = db.Authors.FirstOrDefault(a => a.First_Name.ToUpper() == book.Author.First_Name.ToUpper() 
+                //If author already exists
+                Author author = authorDb.GetAllAuthors().Result.FirstOrDefault(a => a.First_Name.ToUpper() == book.Author.First_Name.ToUpper() 
                                                         && a.Last_Name.ToUpper() == book.Author.Last_Name.ToUpper());
+                //then do not create new author, use existing instead
                 if (author != null)
                     book.Author = author;
-               
-                db.Books.Add(book);
-                db.SaveChanges();
+
+                await bookDb.InsertBook(book);
+                
                 return RedirectToAction("ListBooks");
             }
 
             return View(book);
         }
         
-        public ActionResult Delete(int id = 0)
+        public async Task<ActionResult> Delete(int id = 0)
         {
             ViewBag.Message = "Delete Book";
 
-            Book book = db.Books.Find(id);
+            Book book = await bookDb.GetBookById(id);
             if (book == null)
             {
                 return View("Error");
@@ -179,13 +183,11 @@ namespace BooksLibrary.Controllers
         }
 
         [HttpPost, ActionName("Delete")]
-        public ActionResult DeleteConfirmed(int id)
+        public async Task<ActionResult> DeleteConfirmed(int id)
         {
             ViewBag.Message = "Delete Book";
 
-            Book book = db.Books.Find(id);
-            db.Books.Remove(book);
-            db.SaveChanges();
+            await bookDb.DeleteBook(id);
 
             return RedirectToAction("ListBooks");
         }

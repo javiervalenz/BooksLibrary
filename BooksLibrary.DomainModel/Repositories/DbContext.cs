@@ -9,19 +9,25 @@ namespace BooksLibrary.DomainModel.Repositories
 {
     public sealed class DbContext
     {
-        private static readonly Lazy<DbContext> instance = new Lazy<DbContext>(() => new DbContext());
+        //private static readonly Lazy<DbContext> instance = new Lazy<DbContext>(() => new DbContext());
+        private static DbContext instance;
         private BooksLibraryEntities context;
 
         private DbContext()
         {
-            BooksLibraryEntities context = new BooksLibraryEntities();
+            context = new BooksLibraryEntities();
         }        
 
         public static DbContext Instance
         {
             get
             {
-                return instance.Value;
+                if(instance == null)
+                {
+                    instance = new DbContext();
+                }                    
+
+                return instance;
             }
         }
 
