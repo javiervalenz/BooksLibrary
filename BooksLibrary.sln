@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.22823.1
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BooksLibrary", "BooksLibrary\BooksLibrary.csproj", "{B934C101-771F-49BB-8EDA-DF6D5AC1C9DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BooksLibrary.DomainModel", "BooksLibrary.DomainModel\BooksLibrary.DomainModel.csproj", "{2B71C002-6EB8-4163-A5FC-620F9D23F313}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{B934C101-771F-49BB-8EDA-DF6D5AC1C9DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B934C101-771F-49BB-8EDA-DF6D5AC1C9DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B934C101-771F-49BB-8EDA-DF6D5AC1C9DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B71C002-6EB8-4163-A5FC-620F9D23F313}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B71C002-6EB8-4163-A5FC-620F9D23F313}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B71C002-6EB8-4163-A5FC-620F9D23F313}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B71C002-6EB8-4163-A5FC-620F9D23F313}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
