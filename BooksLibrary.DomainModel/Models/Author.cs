@@ -12,35 +12,37 @@
 namespace BooksLibrary.DomainModel.Models
 {
 
-using System;
+    using System;
     using System.Collections.Generic;
-    
-public partial class Author
-{
+    using System.ComponentModel.DataAnnotations;
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-    public Author()
+    public partial class Author
     {
 
-        this.Books = new HashSet<Book>();
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Author()
+        {
+
+            this.Books = new HashSet<Book>();
+
+        }
+
+        [Display(Name = "Author")]
+        public int Author_Id { get; set; }
+
+        [Required(ErrorMessage = "The field is required.")]
+        public string Last_Name { get; set; }
+
+        [Required(ErrorMessage = "The field is required.")]
+        public string First_Name { get; set; }
+
+        public string Middle_Name { get; set; }
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
+        public virtual ICollection<Book> Books { get; set; }
 
     }
-
-
-    public int Author_Id { get; set; }
-
-    public string Last_Name { get; set; }
-
-    public string First_Name { get; set; }
-
-    public string Middle_Name { get; set; }
-
-
-
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-
-    public virtual ICollection<Book> Books { get; set; }
-
-}
 
 }

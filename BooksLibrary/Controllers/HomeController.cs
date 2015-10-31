@@ -14,7 +14,7 @@ namespace BooksLibrary.Controllers
         private AuthorRepository authorDb = new AuthorRepository();
         private CategoryRepository categoryDb = new CategoryRepository();
 
-        private List<SelectListItem> GetAuthors(bool FirstItemOption = true)
+        private async Task<List<SelectListItem>> GetAuthors(bool FirstItemOption = true)
         {
             List<SelectListItem> authorsList = new List<SelectListItem>();
 
@@ -26,7 +26,8 @@ namespace BooksLibrary.Controllers
                 authorsList.Add(firstItem);
             }
 
-            foreach (var a in authorDb.GetAllAuthors().Result.OrderBy(a => a.First_Name + a.Last_Name))
+            var allAuthors= await authorDb.GetAllAuthors();
+            foreach (var a in allAuthors.OrderBy(a => a.First_Name + a.Last_Name))
             {
                 SelectListItem item = new SelectListItem();
                 item.Text = a.First_Name + " " + a.Last_Name;
@@ -37,7 +38,7 @@ namespace BooksLibrary.Controllers
             return authorsList;
         }
 
-        private List<SelectListItem> GetCategories(bool FirstItemOption = true)
+        private async Task<List<SelectListItem>> GetCategories(bool FirstItemOption = true)
         {
             List<SelectListItem> categoryList = new List<SelectListItem>();
 
@@ -49,7 +50,8 @@ namespace BooksLibrary.Controllers
                 categoryList.Add(firstItem);
             }
 
-            foreach (var c in categoryDb.GetAllCategories().Result.OrderBy(c => c.Category_Name))
+            var allCategories = await categoryDb.GetAllCategories();
+            foreach (var c in allCategories.OrderBy(c => c.Category_Name))
             {
                 SelectListItem item = new SelectListItem();
                 item.Text = c.Category_Name;
@@ -72,46 +74,48 @@ namespace BooksLibrary.Controllers
             return View(model);
         }
 
-        public ActionResult ListByAuthor()
+        public async Task<ActionResult> ListByAuthor()
         {
             ViewBag.Message = "Displaying Books by Author";
 
-            ViewData["Authors"] = GetAuthors();            
+            ViewData["Authors"] = await GetAuthors();
 
-            return View(bookDb.GetAllBooks().Result);
+            var tmpModel = await bookDb.GetAllBooks();
+            return View(tmpModel);
         }
 
         [HttpPost]
-        public ActionResult ListByAuthor(int id)
+        public async Task<ActionResult> ListByAuthor(int id)
         {
             if(id > 0)
             {
-                var filteredBooksList = bookDb.GetAllBooks().Result.Where(b => b.Author_Id == id);
-                return PartialView("PartialBookList", filteredBooksList);
+                var filteredBooksList = await bookDb.GetAllBooks();
+                return PartialView("PartialBookList", filteredBooksList.Where(b => b.Author_Id == id));
             }
 
-            return PartialView("PartialBookList", bookDb.GetAllBooks().Result);
+            return PartialView("PartialBookList", await bookDb.GetAllBooks());
         }
 
-        public ActionResult ListByCategory()
+        public async Task<ActionResult> ListByCategory()
         {
             ViewBag.Message = "Displaying Books by Category";
 
-            ViewData["Categories"] = GetCategories();
+            ViewData["Categories"] = await GetCategories();
 
-            return View(bookDb.GetAllBooks().Result);
+            var tmpModel = await bookDb.GetAllBooks();
+            return View(tmpModel);
         }
 
         [HttpPost]
-        public ActionResult ListByCategory(int id)
+        public async Task<ActionResult> ListByCategory(int id)
         {
             if (id > 0)
             {
-                var filteredBooksList = bookDb.GetAllBooks().Result.Where(b => b.Category_Id == id);
-                return PartialView("PartialBookList", filteredBooksList);
+                var filteredBooksList = await bookDb.GetAllBooks();
+                return PartialView("PartialBookList", filteredBooksList.Where(b => b.Category_Id == id));
             }
 
-            return PartialView("PartialBookList", bookDb.GetAllBooks().Result);
+            return PartialView("PartialBookList", await bookDb.GetAllBooks());
         }
 
         public async Task<ActionResult> Edit(int id = 0)
@@ -142,9 +146,9 @@ namespace BooksLibrary.Controllers
             return View(book);
         }
 
-        public ActionResult Create()
+        public async Task<ActionResult> Create()
         {   
-            ViewData["Categories"] = GetCategories(false);
+            ViewData["Categories"] = await GetCategories(false);
 
             return View();
         }
@@ -155,7 +159,8 @@ namespace BooksLibrary.Controllers
             if (ModelState.IsValid)
             {
                 //If author already exists
-                Author author = authorDb.GetAllAuthors().Result.FirstOrDefault(a => a.First_Name.ToUpper() == book.Author.First_Name.ToUpper() 
+                var matchedAuthors = await authorDb.GetAllAuthors();
+                var author = matchedAuthors.FirstOrDefault(a => a.First_Name.ToUpper() == book.Author.First_Name.ToUpper() 
                                                         && a.Last_Name.ToUpper() == book.Author.Last_Name.ToUpper());
                 //then do not create new author, use existing instead
                 if (author != null)

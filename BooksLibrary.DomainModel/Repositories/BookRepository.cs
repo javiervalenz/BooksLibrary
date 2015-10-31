@@ -27,7 +27,7 @@ namespace BooksLibrary.DomainModel.Repositories
             return await dbContext.Books.FindAsync(bookId);
         }
 
-        public async Task<IEnumerable<Book>> GetBooksByAuthor(string author_name)
+        public async Task<IEnumerable<Book>> SearchBooksByAuthor(string author_name)
         {
             return await (from b in dbContext.Books
                           from a in dbContext.Authors
@@ -36,7 +36,7 @@ namespace BooksLibrary.DomainModel.Repositories
                           select b).ToListAsync();
         }
 
-        public async Task<IEnumerable<Book>> GetBooksByCategory(string category_name)
+        public async Task<IEnumerable<Book>> SearchBooksByCategory(string category_name)
         {
             return await (from b in dbContext.Books
                           from c in dbContext.Categories

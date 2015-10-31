@@ -12,29 +12,38 @@
 namespace BooksLibrary.DomainModel.Models
 {
 
-using System;
+    using System;
     using System.Collections.Generic;
-    
-public partial class Book
+    using System.ComponentModel.DataAnnotations;
+
+    public partial class Book
 {
 
     public int Book_Id { get; set; }
 
-    public string ISBN { get; set; }
+        [Required(ErrorMessage = "The field is required.")]
+        public string ISBN { get; set; }
 
-    public string Book_Name { get; set; }
+        [Required(ErrorMessage = "The field is required.")]
+        [Display(Name = "Book Name")]
+        public string Book_Name { get; set; }
 
-    public int Author_Id { get; set; }
+        [Display(Name = "Author Id")]
+        public int Author_Id { get; set; }
 
-    public Nullable<System.DateTime> Publication_Date { get; set; }
+        [Required(ErrorMessage = "The field is required.")]
+        [Display(Name = "Publication Date")]
+        [DataType(DataType.Date)]
+        public DateTime Publication_Date { get; set; }
 
-    public int Category_Id { get; set; }
+        [Display(Name = "Category Id")]
+        public int Category_Id { get; set; }
 
-    public string Publisher { get; set; }
+        [Required(ErrorMessage = "The field is required.")]
+        public string Publisher { get; set; }
+        
 
-
-
-    public virtual Author Author { get; set; }
+        public virtual Author Author { get; set; }
 
     public virtual Category Category { get; set; }
 

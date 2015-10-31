@@ -14,7 +14,7 @@ namespace BooksLibrary.DomainModel.Repositories
         Task InsertBook(Book book);
         Task DeleteBook(int bookId);
         Task UpdateBook(Book book);        
-        Task<IEnumerable<Book>> GetBooksByCategory(string category);
-        Task<IEnumerable<Book>> GetBooksByAuthor(string author);
+        Task<IEnumerable<Book>> SearchBooksByCategory(string category_name);
+        Task<IEnumerable<Book>> SearchBooksByAuthor(string author_name);
     }
 }
