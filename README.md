@@ -10,7 +10,7 @@ Setup steps:
 
 3.- Open BooksLibrary.sln project using Visual Studio 2015 or if using Visual Studio 2013 then change Framework to .NET 4.5
 
-4.- Update connectionString in Web.config with your SQL server name and credentials (YOUR_SQL_SERVER, USER_NAME, YOUR_PASSWORD)
+4.- Update connectionString in Web.config with your SQL server name and credentials (SQL_SERVER, USER_NAME, PASSWORD)
 
 5.- Compile and Run project
 
